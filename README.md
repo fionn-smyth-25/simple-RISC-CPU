@@ -10,6 +10,9 @@ The goal of this project is to teach myself the basics of CPU architecture by de
 - MOVI
 - JMP
 
+# 16/05/2026
+Added simple assembler.
+
 # 15/05/2026
 Added control unit, program counter and instruction memory modules.
 
