@@ -11,7 +11,7 @@ The goal of this project is to teach myself the basics of CPU architecture by de
 - JMP
 
 # 16/05/2026
-Added simple assembler.
+Added simple assembler written in python.
 
 # 15/05/2026
 Added control unit, program counter and instruction memory modules.
