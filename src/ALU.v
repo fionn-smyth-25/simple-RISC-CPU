@@ -2,9 +2,9 @@
 
 module ALU
 (
-    input signed[7:0] a, b,
+    input signed[31:0] a, b,
     input[2:0] fxn,
-    output reg signed[7:0] c
+    output reg signed[31:0] c
 );
 
     always @* begin
