@@ -2,23 +2,31 @@
 
 module REG_FILE
 (
-    input clk, write_en,
-    input[2:0] read_src_1, read_src_2, reg_dest,
-    input[7:0] write_data,
-    output[7:0] reg_data_1, reg_data_2 
+    input clk, rst, write_en,
+    input[4:0] src_addr_1, src_addr_2, dest_addr,
+    input[31:0] write_data,
+    output[31:0] reg_data_1, reg_data_2 
 );
 
-    //8 registers each 8 bits wide
-    reg[7:0] regs[0:7];
+    //32 registers each 32 bits wide
+    reg[31:0] regs[0:31];
     
     //load data from up to two selected registers
-    assign reg_data_1 = regs[read_src_1];
-    assign reg_data_2 = regs[read_src_2];
+    //INDEPENDENT OF CLK
+    //If the address changes, the new data appears at the output after some propagation delay
+    assign reg_data_1 = regs[src_addr_1];
+    assign reg_data_2 = regs[src_addr_2];
     
     //write data to selected register
+    //synchronous active high reset
     always @(posedge clk) begin
-        if (write_en) begin
-            regs[reg_dest] <= write_data;
+        if (rst) begin
+            for (integer i = 0; i < 32; i = i + 1) begin
+                regs[i] <= 32'b0;
+            end
+        end
+        else if (write_en) begin
+            regs[dest_addr] <= write_data;
         end
     end
 endmodule
