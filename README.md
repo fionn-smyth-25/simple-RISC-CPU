@@ -1,21 +1,4 @@
-# simple-RISC-CPU 
-
-A RISC CPU using 8-bit registers and 16-bit instructions. 
-The goal of this project is to teach myself the basics of CPU architecture by designing a simple RISC-based CPU in Verilog. I've decided on the following instruction set:
-- ADD
-- SUB
-- AND
-- OR
-- ADDI
-- MOVI
-- JMP
-
-# 16/05/2026
-Added simple assembler written in python.
-
-# 15/05/2026
-Added control unit, program counter and instruction memory modules.
-
-# 14/05/2026 
-
-Added the initial versions of the ALU and the register file. I hope to teach myself SystemVerilog by using it to write the testbenches. The next steps will be adding the instruction memory and the control unit.
+# simple-RISC-CPU
+A single cycle RISC CPU based off the MIPS architecture. 
+## Acknowledgements 
+Heavily inspired by: Digital Design and Computer Architecture, 2nd Edition written by David Money Harris and Sarah L. Harris.
