@@ -3,8 +3,8 @@
 module PC
 (
     input clk, rst, jmp_en,
-    input[7:0] jmp_addr,
-    output reg[7:0] pc
+    input[31:0] jmp_addr,
+    output reg[31:0] pc
 );
 
     always @ (posedge clk) begin
@@ -15,7 +15,7 @@ module PC
             pc <= jmp_addr;
         end
         else begin
-            pc <= pc + 1;
+            pc <= pc + 4;
         end     
     end   
 endmodule

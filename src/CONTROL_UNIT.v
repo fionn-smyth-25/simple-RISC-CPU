@@ -2,45 +2,86 @@
 
 module CONTROL_UNIT
 (
-    input[15:0] instruction,
-    output reg reg_write, mem_read, mem_write,
-    output reg[2:0] alu_op
+    input[31:0] instruction,
+    output reg_write, mem_write, reg_dst, alu_src, mem_to_reg, pc_src, jump,
+    output reg[2:0] alu_control
 );
-
-    //decoder
-    wire[3:0] opcode = instruction[15:12];
-    wire[1:0] register_dest = instruction[11:10];
-    wire[1:0] register_source = instruction[9:8];
-    wire[7:0] immediate = instruction[7:0];
     
-    always @* begin
-        reg_write = 0;
-        mem_read = 0;
-        mem_write= 0;
-        alu_op    = 2'b00;
-        
+    wire branch;
+    wire[1:0] alu_op;
+    wire[5:0] func, opcode;
+    reg[8:0] controls;
+    
+    assign func = instruction[5:0];
+    assign opcode = instruction[31:26];
+    
+    assign reg_write = controls[8];
+    assign reg_dst = controls[7];
+    assign alu_src = controls[6];
+    assign branch = controls[5];
+    assign mem_write = controls[4];
+    assign mem_to_reg = controls[3];
+    assign jump = controls[2];
+    assign alu_op = controls[1:0];
+    
+    assign pc_src = branch & 0;
+    
+    always @* begin      
+        //main decoder
         case (opcode)
-            4'b0000: begin //ADD
-                alu_op = 3'b000;
+            6'b000000: begin //signals that instruction is R-Type
+                controls <= 9'b110000010;
             end
-            4'b0001: begin //SUB
-                alu_op = 3'b001;
+            6'b100011: begin //LW (I-Type)
+                controls <= 9'b101001000;
             end       
-            4'b0010: begin //AND
-                alu_op = 3'b010;
+            6'b101011: begin //SW (I-Type)
+                controls <= 9'b001010000;
             end
-            4'b0010: begin //OR
-                alu_op = 3'b011;
+            6'b000100: begin //BEQ (I-Type)
+                controls <= 9'b000100001;
             end
-            4'b0011: begin //ADDI
-                alu_op = 3'b000;
+            6'b001000: begin //ADDI (I-Type)
+                controls <= 9'b101000000;
             end           
-            4'b0100: begin //MOVI
-                alu_op = 3'b111;
+            6'b000010: begin //JMP (J-Type)
+                controls <= 9'b000000100;
             end
-            4'b0101: begin //JMP
-                alu_op = 3'b000;
+            default: begin //illegal op
+                controls <= 9'bxxxxxxxxx;
             end 
+        endcase
+        
+        //alu decoder
+        case (alu_op)
+            2'b00: begin
+                alu_control <= 3'b010; //add
+            end
+            2'b01: begin
+                alu_control <= 3'b110; //sub
+            end
+            default: begin
+                case (func) //R-Type
+                    6'b100000: begin
+                        alu_control <= 3'b010; //add                    
+                    end
+                    6'b100010: begin
+                        alu_control <= 3'b110; //sub
+                    end
+                    6'b100100: begin
+                        alu_control <= 3'b000; //and
+                    end    
+                    6'b100101: begin
+                        alu_control <= 3'b001; //or
+                    end
+                    6'b101010: begin
+                        alu_control <= 3'b111; //slt
+                    end
+                    default: begin
+                        alu_control <= 3'bxxx; //illegal
+                    end                   
+                endcase
+            end
         endcase
     end
 endmodule

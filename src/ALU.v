@@ -9,11 +9,11 @@ module ALU
 
     always @* begin
         case (fxn)
-            3'b000: c = a + b; 
-            3'b001: c = a - b; 
-            3'b010: c = a & b; 
-            3'b011: c = a | b; 
-            3'b100: c = a; 
+            3'b010: c = a + b; 
+            3'b110: c = a - b; 
+            3'b000: c = a & b; 
+            3'b001: c = a | b; 
+            3'b111: c = a; 
             default: c = 0;
         endcase
     end
