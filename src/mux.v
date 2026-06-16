@@ -1,15 +1,16 @@
 `timescale 1ns / 1ps
 
+//parametrizable mux
+//sel = 0 : z = x
+//sel = 1 : z = y
 module mux
+#(parameter WIDTH = 32)
 (
-    input x, y, sel,
-    output z
+    input[WIDTH-1:0] x, y,
+    input sel,
+    output[WIDTH-1:0] z
 );
 
-    wire g0, g1, g2;
-    not e0 (g0, sel);
-    and e1 (g1, x, g0);
-    and e2 (g2, y, sel);
-    or e3 (z, g1, g2);
+    assign z = sel ? y : x;
 
 endmodule
