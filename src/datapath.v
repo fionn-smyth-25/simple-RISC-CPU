@@ -13,7 +13,7 @@ module datapath
     assign write_data = r_d_2;
     assign signimm = {{16{instr[15]}}, instr[15:0]};
     
-    PC pc (.clk(clk), .rst(rst), .jmp_en(pc_src), .jmp_addr(jmp_addr), .pc(pc_out));
+    PC pc (.clk(clk), .rst(rst), .jmp_en(jump), .jmp_addr(jmp_addr), .pc(pc_out));
     REG_FILE rf (.clk(clk), .rst(rst), .src_addr_1(instr[25:21]), .src_addr_2(instr[20:16]), 
                  .dest_addr(write_to_reg), .write_en(reg_write), .write_data(result), 
                  .reg_data_1(src_1), .reg_data_2(r_d_2));

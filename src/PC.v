@@ -14,8 +14,11 @@ module PC
         else if (jmp_en) begin
             pc <= jmp_addr;
         end
+        else if (pc > 255) begin
+            pc <= 0;
+        end
         else begin
-            pc <= pc + 4;
+            pc <= pc + 1;
         end     
     end   
 endmodule
